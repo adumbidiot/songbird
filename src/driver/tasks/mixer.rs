@@ -18,6 +18,7 @@ use discortp::{
 use flume::{Receiver, Sender, TryRecvError};
 use rand::random;
 use spin_sleep::SpinSleeper;
+use std::convert::TryInto;
 use std::time::Instant;
 #[cfg(not(feature = "tokio-02-marker"))]
 use tokio::runtime::Handle;
@@ -434,7 +435,7 @@ impl Mixer {
             )
         };
 
-        self.soft_clip.apply(&mut mix_buffer[..])?;
+        self.soft_clip.apply((&mut mix_buffer[..]).try_into()?)?;
 
         if self.muted {
             mix_len = MixType::MixedPcm(0);

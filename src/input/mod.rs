@@ -58,6 +58,7 @@ use audiopus::coder::GenericCtl;
 use byteorder::{LittleEndian, ReadBytesExt, WriteBytesExt};
 use cached::OpusCompressor;
 use error::{Error, Result};
+use std::convert::TryInto;
 #[cfg(not(feature = "tokio-02-marker"))]
 use tokio::runtime::Handle;
 #[cfg(feature = "tokio-02-marker")]
@@ -236,8 +237,8 @@ impl Input {
 
                         let samples = decoder
                             .decode_float(
-                                Some(&opus_data_buffer[..seen]),
-                                &mut decoder_state.current_frame[..],
+                                Some((&opus_data_buffer[..seen]).try_into().unwrap()),
+                                (&mut decoder_state.current_frame[..]).try_into().unwrap(),
                                 false,
                             )
                             .unwrap_or(0);
