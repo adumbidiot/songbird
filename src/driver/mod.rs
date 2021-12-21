@@ -14,6 +14,7 @@ pub mod bench_internals;
 pub(crate) mod connection;
 mod crypto;
 mod decode_mode;
+pub mod retry;
 pub(crate) mod tasks;
 
 use connection::error::{Error, Result};
@@ -307,7 +308,6 @@ impl Drop for Driver {
     /// Leaves the current connected voice channel, if connected to one, and
     /// forgets all configurations relevant to this Handler.
     fn drop(&mut self) {
-        self.leave();
         let _ = self.sender.send(CoreMessage::Poison);
     }
 }

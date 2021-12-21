@@ -1,8 +1,6 @@
 # Changelog
 
-## 0.2.0-beta.3 — 2021-06-14 — **Magpie**
-
-*These notes will be adjusted between 0.2.0-beta.0 and the stable release.*
+## [0.2.0] — 2021-08-17 — **Magpie**
 
 Magpies are a common sight year-round; strong, intelligent, industrious, and loyal.
 
@@ -25,9 +23,13 @@ Thanks to the following for their contributions:
 * Channel join operations may now timeout after a default 10s—which *should* be handled.
 * Errors returned when joining a channel will now inform you whether you should try to `leave` a channel before rejoining.
 * Youtube-dl variants of `songbird::input::error::Error` have had their case altered from `DL` -> `Dl`.
+* `TrackState` sent from the driver are no longer boxed objects.
+* `DriverDisconnect` events have been introduced, which cover *all* disconnect events. As a result, `DriverConnectFailed` and `DriverReconnectFailed` are deprecated.
+* **Tokio 0.2 support is deprecated. Related features will be removed as of Songbird 0.3.**
 
 ### Added
 
+- [driver] Driver: Automate (re)connection logic (#81) ([@FelixMcFelix]) [c:210e3ae]
 - [input] Input: Add separate YouTube title and channel to Metadata (#75) ([@vilgotf]) [c:edcd39a]
 - [input] Input: Implement StdError for DcaError, input::Error (#73) ([@vilgotf]) [c:e1fc041]
 - [gateway] Gateway: Add debug logging around shard handling ([@FelixMcFelix]) [c:b3caf05]
@@ -35,6 +37,10 @@ Thanks to the following for their contributions:
 
 ### Changed
 
+- [deps] Deps: Bump async-tungstenite version -> 0.14 ([@FelixMcFelix])  [c:47e20d6]
+- [docs] Chore: Update Lavalink URLs ([@FelixMcFelix]) [c:3efe756]
+- [deps] Deps: Bump twilight versions -> [0.5, 0.7) (#87) ([@vilgotf]) [c:91d7542]
+- [tracks] Tracks: Remove box around TrackState (#84) ([@vilgotf]) [c:91d7542]
 - [deps] Deps: Bump twilight versions -> 0.5 (#79) ([@vilgotf]) [c:d2bb277]
 - [input] Input, Driver: Make error messages more idiomatic (#74) ([@vilgotf]) [c:a96f033]
 - [docs] Chore: Rewrite update pathway. ([@FelixMcFelix]) [c:8000da6]
@@ -51,10 +57,24 @@ Thanks to the following for their contributions:
 
 ### Fixed
 
+- [driver] Driver: Fix incorrect leave behaviour in Drop handler ([@FelixMcFelix]) [c:dad48ca]
+- [benchmarks] Fix: Update Benchmark Imports ([@FelixMcFelix]) [c:338a042]
 - [lint] Chore: Clippy fixes for new lints ([@FelixMcFelix]) [c:a1c4f07]
 - [fmt] Chore: Repair formatting. ([@FelixMcFelix]) [c:cd2ade9]
 - [fmt] Chore: Fix clippy warnings (useless clones). ([@FelixMcFelix]) [c:21b8383]
 - [gateway] Gateway: Fix repeat joins on same channel from stalling (#47) ([@FelixMcFelix]) [c:95dd19e]
+
+## [0.1.8] — 2021-07-01
+
+This release patches a metadata parsing panic caused by Ogg files with negative start times.
+
+Thanks to the following for their contributions:
+
+- [@JellyWX]
+
+### Fixed
+
+- [input] Input: Fix Duration underflow on negative start time (#83) ([@JellyWX]) [c:e58cadb]
 
 ## [0.1.7] — 2021-06-14
 
@@ -279,7 +299,8 @@ We'd also like to thank all users who have contributed to this module in the pas
 - [driver] Handle Voice close codes, prevent Songbird spinning WS threads (#1068) ([@FelixMcFelix]) [c:26c9c91]
 
 <!-- COMPARISONS -->
-[0.2.0]: https://github.com/serenity-rs/songbird/compare/v0.1.7...v0.2.0
+[0.2.0]: https://github.com/serenity-rs/songbird/compare/v0.1.8...v0.2.0
+[0.1.8]: https://github.com/serenity-rs/songbird/compare/v0.1.7...v0.1.8
 [0.1.7]: https://github.com/serenity-rs/songbird/compare/v0.1.6...v0.1.7
 [0.1.6]: https://github.com/serenity-rs/songbird/compare/v0.1.5...v0.1.6
 [0.1.5]: https://github.com/serenity-rs/songbird/compare/v0.1.4...v0.1.5
@@ -325,6 +346,16 @@ We'd also like to thank all users who have contributed to this module in the pas
 [@vivian]: https://github.com/vivian
 
 <!-- COMMITS -->
+[c:47e20d6]: https://github.com/serenity-rs/songbird/commit/47e20d6177bc380d44c8cc456f370d2a22b975fd
+[c:dad48ca]: https://github.com/serenity-rs/songbird/commit/dad48ca83595ec6693a4a089c30371e132d099b1
+[c:3efe756]: https://github.com/serenity-rs/songbird/commit/3efe756ca505ee50dfdcfb25bac7ed7e58bf723b
+[c:1b0bcbb]: https://github.com/serenity-rs/songbird/commit/1b0bcbb5f615843757fa2bc1f9c0d4daa7d3a0d1
+[c:210e3ae]: https://github.com/serenity-rs/songbird/commit/210e3ae58499fa45edf9b65de6d9114292341d28
+[c:91d7542]: https://github.com/serenity-rs/songbird/commit/91d754259381e709e0768cbf089dbb67ef84680e
+[c:338a042]: https://github.com/serenity-rs/songbird/commit/338a04234375768d5f00d989b3ed519654b753ce
+[c:e58cadb]: https://github.com/serenity-rs/songbird/commit/e58cadb2a436804fd7af056878fe429770d060d4
+[c:c97f23e]: https://github.com/serenity-rs/songbird/commit/c97f23ee2707c8290cdc07a9553ea4a899336c37
+[c:b925309]: https://github.com/serenity-rs/songbird/commit/b9253097785a0b37fc104e879c05125fe6e88afb
 [c:edcd39a]: https://github.com/serenity-rs/songbird/commit/edcd39a02dbbcb5bd17303d8a6ea6e5c6031d665
 [c:d2bb277]: https://github.com/serenity-rs/songbird/commit/d2bb277232e576a1aa27ac1897f4df1aed2791a1
 [c:a1c4f07]: https://github.com/serenity-rs/songbird/commit/a1c4f07211226cb425e3c41fdc10cc3a061e9b54

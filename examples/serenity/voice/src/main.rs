@@ -4,7 +4,7 @@
 //! ```toml
 //! [dependencies.serenity]
 //! git = "https://github.com/serenity-rs/serenity.git"
-//! features = ["client", standard_framework", "voice"]
+//! features = ["client", "standard_framework", "voice"]
 //! ```
 use std::env;
 
@@ -63,7 +63,12 @@ async fn main() {
         .await
         .expect("Err creating client");
 
-    let _ = client.start().await.map_err(|why| println!("Client ended: {:?}", why));
+    tokio::spawn(async move {
+        let _ = client.start().await.map_err(|why| println!("Client ended: {:?}", why));
+    });
+    
+    tokio::signal::ctrl_c().await;
+    println!("Received Ctrl-C, shutting down.");
 }
 
 #[command]
