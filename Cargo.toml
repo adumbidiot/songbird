@@ -17,7 +17,7 @@ version = "0.6.0"
 aead = { optional = true, version = "0.5.2" }
 aes-gcm = { optional = true, version = "0.10.3" }
 async-trait = { optional = true, version = "0.1" }
-opus2 = { optional = true, version = "0.4.0" }
+opus2 = { optional = true, version = "0.4.0", default-features = false }
 byteorder = { optional = true, version = "1" }
 bytes = { optional = true, version = "1" }
 chacha20poly1305 = { optional = true, version = "0.10.1" }
@@ -162,6 +162,10 @@ receive = ["dep:bytes", "discortp?/demux", "discortp?/rtcp"]
 # Used for docgen/testing/benchmarking.
 full-doc = ["default", "tungstenite", "twilight", "builtin-queue", "receive"]
 internals = ["dep:byteorder"]
+
+# The backends for libopus
+backend-libopus = ["opus2?/backend-libopus"]
+backend-mousiki = ["opus2?/backend-mousiki"]
 
 [lib]
 bench = false
